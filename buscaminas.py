@@ -1,5 +1,5 @@
-from seting import *
 import random
+from seting import *
 import pygame
 
 pygame.init()
@@ -14,16 +14,25 @@ for alto in range(PANEL,(ALTO+1),ALTO_CEL):
 
 pygame.display.update()
 
+
+def aleatoriedad():
+    cord_x = random.randint(0,CANT_COL-1)
+    cord_y = random.randint(0,CANT_FIL-1)
+    return cord_x,cord_y
+    
 def colocacion_minas():
     numeros = []
-        cord_x = random.randint(0, CANT_COL)
-        cord_y = random.randint(0, CANT_COL)
-        for i in range(1,CANT_MINAS):
-            if cord_x,cord_y == numeros[i]:
-                
-        numeros.append((cord_x,cord_y))
+    minas_colocadas = 0
+    while CANT_MINAS != minas_colocadas:
+        cordenadas = aleatoriedad()
+        if cordenadas not in numeros:
+            numeros.append(cordenadas)
+            minas_colocadas += 1
+            matriz[cordenadas] = 1
+            
+        
     
-    print(numeros)
+    print(matriz)
     
     
     
