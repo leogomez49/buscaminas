@@ -63,7 +63,7 @@ def nace ():
 
 def dibujar_cel(FILA,COLUMNA):
     #Codigo uno
-    if matriz[FILA+1][COLUMNA+1] == 1:
+    if matriz[FILA+1-(PANEL//ALTO_CEL)][COLUMNA+1] == 1:
         pygame.draw.rect(Pantalla,NEGRO,(ANCHO_CEL*COLUMNA+1,ALTO_CEL*FILA+1,ANCHO_CEL-1,ALTO_CEL-1))
     else: pygame.draw.rect(Pantalla,NEGRO,(ANCHO_CEL*COLUMNA+1,ALTO_CEL*FILA+1,ANCHO_CEL-1,ALTO_CEL-1))
 
@@ -84,13 +84,11 @@ while True :
             quit(0)
             
         if event.type == pygame.MOUSEBUTTONDOWN:
-          coord_col = int(math.floor(event.pos[0]/ANCHO_CEL)- PANEL_RESTA)
-          coord_fil = int(math.floor(event.pos[1]/ALTO_CEL)) 
+          coord_col = int(math.floor(event.pos[0]/ANCHO_CEL))
+          print(event.pos[1])
+          coord_fil = int(math.floor((event.pos[1])/ALTO_CEL)) 
           
-          if matriz[coord_fil+1][coord_col+1] == 0 :
-            matriz[coord_fil+1][coord_col+1] = 1
-          else :   
-            matriz[coord_fil+1][coord_col+1] = 0
+          
           dibujar_cel(coord_fil,coord_col)
           
           pygame.display.update()

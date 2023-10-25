@@ -7,6 +7,7 @@ COLOR_BG = (80,80,80)
 COLOR_PANEL = (50,60,50)
 PANEL = ALTO//4
 PANEL_RESTA =  ALTO - PANEL
+
 GRIS = (40,40,40)
 NEGRO = (50,12,12)
 RESOLUCION = (ANCHO,ALTO)
@@ -18,3 +19,4 @@ CANT_COL = int(ANCHO/ANCHO_CEL)
 matriz = np.zeros((CANT_FIL+2,CANT_COL+2),dtype = int)
 
 print(matriz)
+print(PANEL)
