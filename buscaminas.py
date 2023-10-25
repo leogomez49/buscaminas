@@ -16,14 +16,12 @@ pygame.display.update()
 
 def colocacion_minas():
     numeros = []
-    while len(numeros) == CANT_MINAS:
         cord_x = random.randint(0, CANT_COL)
         cord_y = random.randint(0, CANT_COL)
         for i in range(1,CANT_MINAS):
-            if (cord_x,cord_y) == numeros[i]:
-                print(cord_x,cord_y)
+            if cord_x,cord_y == numeros[i]:
                 
-                numeros.append((cord_x,cord_y))
+        numeros.append((cord_x,cord_y))
     
     print(numeros)
     
