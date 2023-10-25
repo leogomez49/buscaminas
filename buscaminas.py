@@ -1,6 +1,7 @@
 import random
 from seting import *
 import pygame
+import math
 
 pygame.init()
 Pantalla = pygame.display.set_mode(RESOLUCION)
@@ -16,8 +17,9 @@ pygame.display.update()
 
 
 def aleatoriedad():
-    cord_x = random.randint(0,CANT_COL-1)
-    cord_y = random.randint(0,CANT_FIL-1)
+    cord_x = random.randint(0+1,CANT_COL-2)
+    print(CANT_COL)
+    cord_y = random.randint(0+1,CANT_FIL-2)
     return cord_x,cord_y
     
 def colocacion_minas():
@@ -28,16 +30,50 @@ def colocacion_minas():
         if cordenadas not in numeros:
             numeros.append(cordenadas)
             minas_colocadas += 1
-            matriz[cordenadas] = 1
-            
+            matriz[cordenadas] = 9
         
-    
     print(matriz)
     
-    
-    
-colocacion_minas()
+def xontador_vexinos(X,Y):
+  vecinos = 0      
+  for b in range(X-1,X+2):
+    jup = b
+    for v in range(Y-1, Y+2):
+      up = v
+      if not(X == jup and Y == up) and matriz[jup][up] == 9:
+        vecinos += 1
+        #print(X,Y)
+        #print(vecinos)
+  return vecinos
 
+def nace ():
+    global matriz
+    matriz_2 = np.copy(matriz)
+
+    for p in range(1,CANT_FIL+1):
+      matrizX3 = p
+      for o in range(1,CANT_COL+1):
+        matrizY3 = o
+        if matriz[matrizX3,matrizY3] == 9:
+            continue
+        else:
+            vecinos = xontador_vexinos(matrizX3,matrizY3)
+            matriz_2[matrizX3,matrizY3] = vecinos 
+    matriz = matriz_2
+
+def dibujar_cel(FILA,COLUMNA):
+    #Codigo uno
+    if matriz[FILA+1][COLUMNA+1] == 1:
+        pygame.draw.rect(Pantalla,NEGRO,(ANCHO_CEL*COLUMNA+1,ALTO_CEL*FILA+1,ANCHO_CEL-1,ALTO_CEL-1))
+    else: pygame.draw.rect(Pantalla,NEGRO,(ANCHO_CEL*COLUMNA+1,ALTO_CEL*FILA+1,ANCHO_CEL-1,ALTO_CEL-1))
+
+
+
+
+colocacion_minas()
+nace()
+print("")
+print(matriz)
 
 
 while True : 
@@ -46,3 +82,17 @@ while True :
         if event.type == pygame.QUIT: 
             pygame.quit() 
             quit(0)
+            
+        if event.type == pygame.MOUSEBUTTONDOWN:
+          coord_col = int(math.floor(event.pos[0]/ANCHO_CEL)- PANEL_RESTA)
+          coord_fil = int(math.floor(event.pos[1]/ALTO_CEL)) 
+          
+          if matriz[coord_fil+1][coord_col+1] == 0 :
+            matriz[coord_fil+1][coord_col+1] = 1
+          else :   
+            matriz[coord_fil+1][coord_col+1] = 0
+          dibujar_cel(coord_fil,coord_col)
+          
+          pygame.display.update()
+          #print(MATRIZ)
+                      

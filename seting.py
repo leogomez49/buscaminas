@@ -8,12 +8,13 @@ COLOR_PANEL = (50,60,50)
 PANEL = ALTO//4
 PANEL_RESTA =  ALTO - PANEL
 GRIS = (40,40,40)
+NEGRO = (50,12,12)
 RESOLUCION = (ANCHO,ALTO)
 ANCHO_CEL = 25
 ALTO_CEL = 25
 CANT_MINAS = 10
 CANT_FIL = int(PANEL_RESTA/ALTO_CEL)
 CANT_COL = int(ANCHO/ANCHO_CEL)
-matriz = np.zeros((CANT_FIL,CANT_COL),dtype = int)
+matriz = np.zeros((CANT_FIL+2,CANT_COL+2),dtype = int)
 
 print(matriz)
