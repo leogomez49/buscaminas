@@ -66,7 +66,7 @@ def dibujar_cel(FILA,COLUMNA):
     if matriz[FILA+1-(PANEL//ALTO_CEL)][COLUMNA+1] == 1:
         pygame.draw.rect(Pantalla,NEGRO,(ANCHO_CEL*COLUMNA+1,ALTO_CEL*FILA+1,ANCHO_CEL-1,ALTO_CEL-1))
     else: pygame.draw.rect(Pantalla,NEGRO,(ANCHO_CEL*COLUMNA+1,ALTO_CEL*FILA+1,ANCHO_CEL-1,ALTO_CEL-1))
-
+    print(matriz)
 
 
 
