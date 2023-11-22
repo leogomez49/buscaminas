@@ -4,7 +4,7 @@ from pygame import *
 
 ANCHO_CEL = 30
 ALTO_CEL = 30
-CANT_MINAS = 1
+CANT_MINAS = 10
 CANT_FIL = 8
 CANT_COL = 8
 
@@ -21,7 +21,7 @@ GRIS = (40,40,40)
 NEGRO = (50,12,12)
 RESOLUCION = (ANCHO,PANEL_SUMA)
 
-matriz = np.zeros((CANT_FIL+2,CANT_COL+2),dtype = int)
+matriz = np.zeros((CANT_FIL,CANT_COL),dtype = int)
 
 print(matriz)
 print(PANEL)

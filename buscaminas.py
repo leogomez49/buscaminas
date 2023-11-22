@@ -2,6 +2,7 @@ import random
 from seting import *
 import pygame
 import math
+import os
 
 pygame.init()
 Pantalla = pygame.display.set_mode(RESOLUCION)
@@ -14,6 +15,28 @@ for alto in range(PANEL,(PANEL_SUMA+1),ALTO_CEL):
 
 
 pygame.display.update()
+
+minas_colocadas = False
+imagenes = {}
+
+
+def carga_img():
+    for nombre_archivo in os.listdir("Sprites"):
+        if (not nombre_archivo.endswith(".png")):
+            continue
+        image = pygame.image.load(r"Sprites/"+nombre_archivo)
+        image = pygame.transform.scale(image,(ALTO_CEL,ANCHO_CEL))
+        imagenes[nombre_archivo.split(".")[0]] = image
+    
+carga_img()
+
+def obtenerimagen(celda,primer_click):
+    archivo = "Grid"
+    if primer_click:
+        archivo = "empty" if celda == 0 else "mine"
+    return imagenes[archivo] 
+    
+
 
 def sin_minas(X,Y):
     print(X,Y)
@@ -36,9 +59,9 @@ def sin_minas(X,Y):
 
     
 def aleatoriedad():
-    cord_x = random.randint(0+1,CANT_COL-2)
+    cord_x = random.randint(0,CANT_COL-1)
     print(CANT_COL)
-    cord_y = random.randint(0+1,CANT_FIL-2)
+    cord_y = random.randint(0,CANT_FIL-1)
     return cord_x,cord_y
     
 def colocacion_minas():
@@ -59,10 +82,11 @@ def xontador_vexinos(X,Y):
     jup = b
     for v in range(Y-1, Y+2):
       up = v
-      if not(X == jup and Y == up) and matriz[jup][up] == 9:
-        vecinos += 1
-        #print(X,Y)
-        #print(vecinos)
+      if not (jup < 0 or jup > CANT_COL or up < 0 or up > CANT_FIL) :
+          if not(X == jup and Y == up) and matriz[jup][up] == 9:
+            vecinos += 1
+            #print(X,Y)
+            #print(vecinos)
   return vecinos
 
 def nace ():
@@ -80,17 +104,23 @@ def nace ():
             matriz_2[matrizX3,matrizY3] = vecinos 
     matriz = matriz_2
 
-def dibujar_cel(FILA,COLUMNA):
+def dibujar_cel(minas_colocada):
     #Codigo uno
-    if matriz[FILA+1-(PANEL//ALTO_CEL)][COLUMNA+1] == 1:
-        pygame.draw.rect(Pantalla,NEGRO,(ANCHO_CEL*COLUMNA+1,ALTO_CEL*FILA+1,ANCHO_CEL-1,ALTO_CEL-1))
-    else: pygame.draw.rect(Pantalla,NEGRO,(ANCHO_CEL*COLUMNA+1,ALTO_CEL*FILA+1,ANCHO_CEL-1,ALTO_CEL-1))
-    print(matriz)
+    #if matriz[FILA+1-(PANEL//ALTO_CEL)][COLUMNA+1] == 1:
+    #    pygame.draw.rect(Pantalla,NEGRO,(ANCHO_CEL*COLUMNA+1,ALTO_CEL*FILA+1,ANCHO_CEL-1,ALTO_CEL-1))
+    #else: pygame.draw.rect(Pantalla,NEGRO,(ANCHO_CEL*COLUMNA+1,ALTO_CEL*FILA+1,ANCHO_CEL-1,ALTO_CEL-1))
+    #print(matriz)
+    #codigo 2
+    tupla = (0,PANEL)
+    for fila in range (CANT_FIL):
+        for columna in range (CANT_COL):
+            imagen = obtenerimagen(matriz[fila][columna],minas_colocadas)
+            Pantalla.blit(imagen,tupla)
+            tupla = (tupla[0]+ ALTO_CEL,tupla[1])
+        tupla = (0,tupla[1]+ ALTO_CEL)
 
 
-
-colocacion_minas()
-nace()
+#nace()
 print("")
 print(matriz)
 
@@ -105,11 +135,16 @@ while True :
         if event.type == pygame.MOUSEBUTTONDOWN:
           coord_col = int(math.floor(event.pos[0]/ANCHO_CEL))
           print(event.pos[1])
-          coord_fil = int(math.floor((event.pos[1])/ALTO_CEL)) 
+          coord_fil = int(math.floor((event.pos[1])/ALTO_CEL))
+          if not minas_colocadas:
+              colocacion_minas()
+              minas_colocadas = True
           
-          if event.pos[1] > PANEL:
-              dibujar_cel(coord_fil,coord_col)
-          sin_minas(coord_col+1,coord_fil+1)
-          pygame.display.update()
+          #if event.pos[1] > PANEL:
+           #   dibujar_cel(coord_fil,coord_col)
+          #sin_minas(coord_col+1,coord_fil+1)
+          
           #print(MATRIZ)
-                      
+    dibujar_cel(minas_colocadas)
+    
+    pygame.display.update()
